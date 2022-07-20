@@ -1,0 +1,102 @@
+<div class="events-list-container mat-elevation-z8">
+  <div class="header">
+    <h1 class="mat-title">Events</h1>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Enter a date range</mat-label>
+      <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+        <input matStartDate formControlName="start" placeholder="Start date" />
+        <input matEndDate formControlName="end" placeholder="End date" />
+      </mat-date-range-input>
+      <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+
+      <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')"
+        >Invalid start date</mat-error
+      >
+      <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')"
+        >Invalid end date</mat-error
+      >
+    </mat-form-field>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <table mat-table [dataSource]="dataSource">
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th width="300" mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
+
+    <!-- Outside Column -->
+    <ng-container matColumnDef="outside">
+      <th width="100" mat-header-cell *matHeaderCellDef>Outside</th>
+      <td mat-cell *matCellDef="let element">
+        <mat-icon *ngIf="element.isOutside" aria-hidden="false" aria-label="Event is outside">done</mat-icon>
+        <mat-icon *ngIf="!element.isOutside" aria-hidden="false" aria-label="Event is outside">close</mat-icon>
+      </td>
+    </ng-container>
+
+    <!-- City Column -->
+    <ng-container matColumnDef="city">
+      <th width="100" mat-header-cell *matHeaderCellDef>City</th>
+      <td mat-cell *matCellDef="let element">{{ element.city || 'N/A' }}</td>
+    </ng-container>
+
+    <!-- Country Column -->
+    <ng-container matColumnDef="country">
+      <th width="100" mat-header-cell *matHeaderCellDef>Country</th>
+      <td mat-cell *matCellDef="let element">{{ element.country || 'N/A' }}</td>
+    </ng-container>
+
+    <!-- Remote Column -->
+    <ng-container matColumnDef="remote">
+      <th width="100" mat-header-cell *matHeaderCellDef>Remote</th>
+      <td mat-cell *matCellDef="let element">
+        <mat-icon *ngIf="element.remote" aria-hidden="false" aria-label="Event is outside">done</mat-icon>
+        <mat-icon *ngIf="!element.remote" aria-hidden="false" aria-label="Event is outside">close</mat-icon>
+      </td>
+    </ng-container>
+
+    <!-- Organizer Column -->
+    <ng-container matColumnDef="organizer">
+      <th width="150" mat-header-cell *matHeaderCellDef>Organizer</th>
+      <td mat-cell *matCellDef="let element">
+        {{
+          element.organizers.length > 0 ? element.organizers[0]?.name : "N/A"
+        }}
+      </td>
+    </ng-container>
+
+    <!-- Date Column -->
+    <ng-container matColumnDef="date">
+      <th width="100" mat-header-cell *matHeaderCellDef>Date</th>
+      <td mat-cell *matCellDef="let element">
+        {{ formatDate(element.eventDate) }}
+      </td>
+    </ng-container>
+
+    <!-- Details Column -->
+    <ng-container matColumnDef="details">
+      <th width="100" mat-header-cell *matHeaderCellDef>Details</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-stroked-button color="primary" (click)="showEventDetail(element.id)">Details</button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <mat-paginator
+    [length]="length"
+    [pageIndex]="pageIndex"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[5, 10]"
+    showFirstLastButtons
+    aria-label="Select page of periodic elements"
+  >
+  </mat-paginator>
+</div>
