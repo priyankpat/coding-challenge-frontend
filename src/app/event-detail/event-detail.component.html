@@ -1,0 +1,62 @@
+<h2 mat-dialog-title>{{ !loading ? event?.name : "loading..." }}</h2>
+<mat-dialog-content class="mat-typography">
+  <mat-list class="list" role="list" *ngIf="!loading">
+    <mat-list-item role="listitem"
+      ><span>Name:</span> {{ event?.name }}</mat-list-item
+    >
+    <mat-list-item role="listitem"
+      ><span>City:</span> {{ event?.city }}</mat-list-item
+    >
+    <mat-list-item role="listitem"
+      ><span>Country:</span> {{ event?.country }}</mat-list-item
+    >
+    <mat-list-item role="listitem"
+      ><span>Remote:</span>
+      <mat-icon
+        *ngIf="event?.isOutside"
+        aria-hidden="false"
+        aria-label="Event is outside"
+        >done</mat-icon
+      >
+      <mat-icon
+        *ngIf="!event?.isOutside"
+        aria-hidden="false"
+        aria-label="Event is outside"
+        >close</mat-icon
+      ></mat-list-item
+    >
+    <mat-list-item role="listitem"
+      ><span>Outside:</span>
+      <mat-icon
+        *ngIf="event?.isOutside"
+        aria-hidden="false"
+        aria-label="Event is outside"
+        >done</mat-icon
+      >
+      <mat-icon
+        *ngIf="!event?.isOutside"
+        aria-hidden="false"
+        aria-label="Event is outside"
+        >close</mat-icon
+      >
+    </mat-list-item>
+    <mat-list-item role="listitem"
+      ><span>Temperature:</span> {{ event?.weather ? event?.weather?.temperatureInDegreesCelsius + ' &#8451;' : 'N/A' }}</mat-list-item
+    >
+    <mat-list-item role="listitem"
+      ><span>Chance of Rain:</span> {{ event?.weather ? event?.weather?.chanceOfRain + '%' : 'N/A' }}</mat-list-item
+    >
+    <mat-list-item>
+      <div class="list-item">
+        <span>Organizer(s):</span>
+
+        <li *ngFor="let person of event?.organizers">
+          {{ person?.name }}
+        </li>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close color="error">Cancel</button>
+</mat-dialog-actions>
